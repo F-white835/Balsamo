@@ -1,14 +1,44 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Factura {{ numero }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; border: 1px solid #ccc; text-align: left; }
+        th { background-color: #f0f0f0; }
+        h1 { text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Factura #{{ numero }}</h1>
+    <p><strong>Cliente:</strong> {{ cliente }}</p>
+    <p><strong>Fecha:</strong> {{ fecha }}</p>
 
-{% block content %}
-<div class="jumbotron">
-  <h1 class="display-4">Hello, world!</h1>
-  <p class="lead">This is a simple hero unit, 
-    a simple jumbotron-style component for calling extra attention to featured
-    content or information.</p>
-  <hr class="my-4">
-  <p>It uses utility classes for typography and spacing to space content 
-    out within the larger container.</p>
-  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-</div>
-{% endblock %}
+    <table>
+        <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.descripcion }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>${{ "%.2f"|format(item.precio) }}</td>
+                <td>${{ "%.2f"|format(item.cantidad * item.precio) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p><strong>Subtotal:</strong> ${{ "%.2f"|format(subtotal) }}</p>
+    <p><strong>IVA ({{ iva_porcentaje }}%):</strong> ${{ "%.2f"|format(iva) }}</p>
+    <h2>Total: ${{ "%.2f"|format(total) }}</h2>
+</body>
+</html>
